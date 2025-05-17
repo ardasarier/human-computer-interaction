@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 30px;
+}
+
+#taskText {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+#display {
+    width: 400px;
+    height: 40px;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.calculator {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-width: 1650px;
+    margin: 0 auto 20px;
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(4, 70px);
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn {
+    width: 60px;
+    height: 60px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.btn-long {
+    width: 140px;
+    height: 60px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.empty {
+    visibility: hidden;
+}
