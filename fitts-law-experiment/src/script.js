@@ -2,14 +2,18 @@ const display = document.getElementById("display");
 const buttons = document.querySelectorAll(".btn");
 const taskText = document.getElementById("taskText");
 const exportBtn = document.getElementById("exportBtn");
+const taskCounter = document.getElementById("taskCounter");
 
 let currentInput = "";
 let expectedInput = "";
 let lastClickTime = null;
 let lastButtonCenter = null;
-let logData = [];
+let taskStartTime = null;
 
-const W = 60; // Buttonbreite in px
+let taskCount = 1;
+const maxTasks = 20;
+
+let allLogData = [];
 
 function generateRandomNumber() {
     return (Math.floor(Math.random() * 10) + Math.random()).toFixed(2);
@@ -17,7 +21,7 @@ function generateRandomNumber() {
 
 function getButtonCenter(btn) {
     const rect = btn.getBoundingClientRect();
-    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, w: rect.width };
 }
 
 function calculateDistance(p1, p2) {
@@ -27,16 +31,26 @@ function calculateDistance(p1, p2) {
 }
 
 function startTask() {
+    if (taskCount > maxTasks) {
+        alert("Experiment abgeschlossen. Bitte exportiere die CSV-Datei.");
+        return;
+    }
+
     const num1 = generateRandomNumber();
     const num2 = generateRandomNumber();
     expectedInput = num1 + "*" + num2 + "=";
-    taskText.textContent = "Bitte eingeben: " + num1 + " * " + num2;
+    taskText.textContent = `Bitte eingeben: ${num1} * ${num2}`;
+    taskCounter.textContent = `Aufgabe: ${taskCount} / ${maxTasks}`;
+
     currentInput = "";
     display.value = "";
     lastClickTime = null;
     lastButtonCenter = null;
-    logData = [];
+    taskStartTime = Date.now();
+    currentLog = [];
 }
+
+let currentLog = [];
 
 buttons.forEach(button => {
     button.addEventListener("click", () => {
@@ -49,45 +63,47 @@ buttons.forEach(button => {
             if (lastClickTime && lastButtonCenter) {
                 const MT = now - lastClickTime;
                 const D = calculateDistance(lastButtonCenter, center);
-                const ID = Math.log2((2 * D) / W);
-
-                logData.push({
+                const ID = Math.log2((2 * D) / center.w);
+                currentLog.push({
                     char: val,
                     MT: MT,
                     ID: ID.toFixed(4),
                     D: D.toFixed(2)
                 });
+            } else {
+                currentLog.push({ char: val, MT: "-", ID: "-", D: "-" });
             }
 
             lastClickTime = now;
             lastButtonCenter = center;
-
             currentInput += val;
             display.value += val;
 
             if (currentInput === expectedInput) {
-                const duration = Date.now() - logData[0]?.MT - lastClickTime + now;
-                alert("Ergebnis: " + eval(expectedInput.slice(0, -1)) +
-                    "\nEingabezeit: " + Math.round(duration) + " ms");
-                console.table(logData);
-                startTask();
+                taskCount++;
+                allLogData.push(...currentLog);
+                setTimeout(() => {
+                    startTask();
+                }, 500);
             }
         }
     });
 });
 
-exportBtn?.addEventListener("click", () => {
+exportBtn?.addEventListener("click", exportCSV);
+
+function exportCSV() {
     const csvRows = [
         "char,MT(ms),ID,D(px)",
-        ...logData.map(row => `${row.char},${row.MT},${row.ID},${row.D}`)
+        ...allLogData.map(r => `${r.char},${r.MT},${r.ID},${r.D}`)
     ];
     const csvString = csvRows.join("\n");
-    const blob = new Blob([csvString], { type: 'text/csv' });
+    const blob = new Blob([csvString], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
     link.download = "fitts_experiment_data.csv";
     link.click();
-});
+}
 
 startTask();

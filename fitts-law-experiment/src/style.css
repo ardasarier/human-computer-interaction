@@ -1,7 +1,7 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: sans-serif;
     text-align: center;
-    margin: 30px;
+    padding: 2rem;
 }
 
 #taskText {
@@ -16,13 +16,21 @@ body {
     margin-bottom: 20px;
 }
 
-.calculator {
+.calculator0 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
     max-width: 1650px;
     margin: 0 auto 20px;
+}
+
+.calculator {
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: repeat(4, 60px);
+    gap: 10px;
+    justify-content: center;
 }
 
 .grid-layout {
@@ -33,17 +41,21 @@ body {
 }
 
 .btn {
-    width: 60px;
-    height: 60px;
-    font-size: 22px;
+    padding: 1rem;
+    font-size: 1.5rem;
     cursor: pointer;
 }
 
-.btn-long {
-    width: 140px;
-    height: 60px;
-    font-size: 22px;
-    cursor: pointer;
+.short {
+    grid-column: span 1;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.long {
+    grid-column: span 4;
+    background-color: #4CAF50;
+    color: white;
 }
 
 .empty {
