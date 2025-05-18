@@ -101,8 +101,17 @@ function exportCSV() {
     const blob = new Blob([csvString], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
+
+
+    let filename = "fitts_experiment_data.csv";
+    if (window.location.pathname.includes("layout1")) {
+        filename = "fitts_layout1.csv";
+    } else if (window.location.pathname.includes("layout2")) {
+        filename = "fitts_layout2.csv";
+    }
+
     link.href = url;
-    link.download = "fitts_experiment_data.csv";
+    link.download = filename;
     link.click();
 }
 

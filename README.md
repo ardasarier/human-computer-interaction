@@ -1,1 +1,5 @@
-Öffne die >>index.html<< im Browser.
+- git clone bla bla
+- Öffnet die index.html im Browser eurer Wahl.
+- Probiert die beiden Tests.
+- Ladet die CSVs jeweils beide runter.
+- Das weitere Vorgehen besprechen wir dann.
