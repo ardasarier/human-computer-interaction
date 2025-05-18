@@ -2,5 +2,5 @@
 - Öffnet die index.html im Browser eurer Wahl.
 - Probiert die beiden Tests.
 - Ladet die CSVs jeweils beide runter.
-- Schreibt am besten noch euren Namen ans Ende.
+- Schreibt am besten noch euren Namen ans Ende des Dateinamens.
 - Das weitere Vorgehen besprechen wir dann.
